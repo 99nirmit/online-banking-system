@@ -1,4 +1,4 @@
 package com.onlinebankingsystem.repository;
 
-public interface User {
+public interface UserRepository {
 }
