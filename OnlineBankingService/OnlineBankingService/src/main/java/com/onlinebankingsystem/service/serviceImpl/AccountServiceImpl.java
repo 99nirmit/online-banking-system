@@ -1,0 +1,38 @@
+package com.onlinebankingsystem.service.serviceImpl;
+
+import com.onlinebankingsystem.dto.AccountDTO;
+import com.onlinebankingsystem.entities.Account;
+import com.onlinebankingsystem.entities.BusinessAccount;
+import com.onlinebankingsystem.entities.SavingAccount;
+import com.onlinebankingsystem.repository.AccountRepository;
+import com.onlinebankingsystem.service.AccountService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AccountServiceImpl implements AccountService {
+
+    @Autowired
+    private AccountRepository accountRepository;
+
+    @Override
+    public void createAccount(AccountDTO accountDTO) {
+        Account account;
+        if("checking".equalsIgnoreCase(accountDTO.getTypeOfAccount())){
+            account = new SavingAccount(accountDTO.getBalance());
+        }else{
+            account = new BusinessAccount(accountDTO.getBalance());
+        }
+        accountRepository.save(account);
+    }
+
+    @Override
+    public AccountDTO getAccountDetails(Long id) {
+        Account account = accountRepository.findById(id).orElseThrow();
+        AccountDTO accountDTO = new AccountDTO();
+        accountDTO.setId(accountDTO.getId());
+        accountDTO.setBalance(accountDTO.getBalance());
+        accountDTO.setTypeOfAccount(accountDTO.getTypeOfAccount());
+        return accountDTO;
+    }
+}
