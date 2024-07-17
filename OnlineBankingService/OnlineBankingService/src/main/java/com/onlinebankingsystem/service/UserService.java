@@ -1,8 +1,11 @@
 package com.onlinebankingsystem.service;
 
-import com.onlinebankingsystem.dto.UserDTO;
+import com.onlinebankingsystem.dto.UserDto;
 
 public interface UserService {
-    UserDTO registerUser(UserDTO userDTO);
-    UserDTO loginUser(String username, String password);
+    UserDto getUserById(Long id);
+    UserDto registerUser(UserDto userDto);
+    UserDto updateUser(Long id, UserDto userDto);
+    void deleteUser(Long id);
+    String encodePassword(String password);
 }
