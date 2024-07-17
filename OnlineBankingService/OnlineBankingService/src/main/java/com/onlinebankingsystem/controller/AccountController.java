@@ -17,7 +17,7 @@ public class AccountController {
         accountServiceImpl.createAccount(accountDTO);
     }
 
-    @GetMapping("/get")
+    @GetMapping("/get/{id}")
     public AccountDTO getAccountDetails(@PathVariable Long id){
        return accountServiceImpl.getAccountDetails(id);
     }

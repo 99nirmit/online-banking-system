@@ -28,11 +28,12 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountDTO getAccountDetails(Long id) {
-        Account account = accountRepository.findById(id).orElseThrow();
+        Account account = accountRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Account Not Found"));
         AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setId(accountDTO.getId());
-        accountDTO.setBalance(accountDTO.getBalance());
-        accountDTO.setTypeOfAccount(accountDTO.getTypeOfAccount());
+        accountDTO.setId(account.getId());
+        accountDTO.setBalance(account.getBalance());
+        accountDTO.setTypeOfAccount(account.getTypeOfAccount());
         return accountDTO;
     }
 }

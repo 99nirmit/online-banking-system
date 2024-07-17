@@ -20,6 +20,8 @@ import lombok.NoArgsConstructor;
 
     private double balance;
 
+    private String typeOfAccount;
+
     public abstract void deposit(double amount);
 
     public abstract void withdraw(double amount);
