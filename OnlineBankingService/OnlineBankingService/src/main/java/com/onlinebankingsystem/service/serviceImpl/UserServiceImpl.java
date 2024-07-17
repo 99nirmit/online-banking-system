@@ -1,44 +1,72 @@
 package com.onlinebankingsystem.service.serviceImpl;
 
-import com.onlinebankingsystem.dto.UserDTO;
+import com.onlinebankingsystem.dto.UserDto;
 import com.onlinebankingsystem.entities.User;
 import com.onlinebankingsystem.repository.UserRepository;
 import com.onlinebankingsystem.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
+@AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDTO registerUser(UserDTO userDto) {
-        User user = new User();
-        user.setUsername(userDto.getUsername());
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-
-        User savedUser = userRepository.save(user);
-
-        userDto.setId(savedUser.getId());
-        return userDto;
+    public UserDto getUserById(Long id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        return userOptional.map(this::convertToDto).orElse(null);
     }
 
     @Override
-    public UserDTO loginUser(String username, String password) {
-        User user = userRepository.findByUsername(username);
-        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
-            UserDTO userDto = new UserDTO();
-            userDto.setId(user.getId());
-            userDto.setUsername(user.getUsername());
-            userDto.setPassword(user.getPassword());
-            return userDto;
+    public UserDto registerUser(UserDto userDto) {
+        User user = convertToEntity(userDto);
+        user.setPassword(passwordEncoder.encode(userDto.getPassword())); // Encrypting password
+        User savedUser = userRepository.save(user);
+        return convertToDto(savedUser);
+    }
+
+    @Override
+    public UserDto updateUser(Long id, UserDto userDto) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setUsername(userDto.getUsername());
+            user.setPassword(passwordEncoder.encode(userDto.getPassword())); // Encrypting password
+            userRepository.save(user);
+            return convertToDto(user);
         }
         return null;
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
+
+    @Override
+    public String encodePassword(String password) {
+        return passwordEncoder.encode(password);
+    }
+
+    private UserDto convertToDto(User user) {
+        UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setUsername(user.getUsername());
+        userDto.setPassword(user.getPassword());
+        return userDto;
+    }
+
+    private User convertToEntity(UserDto userDto) {
+        User user = new User();
+        user.setId(userDto.getId());
+        user.setUsername(userDto.getUsername());
+        user.setPassword(userDto.getPassword());
+        return user;
     }
 }
