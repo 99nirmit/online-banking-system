@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
             UserDTO userDto = new UserDTO();
             userDto.setId(user.getId());
             userDto.setUsername(user.getUsername());
-            userDto.setPassword(user.getPassword()); // Typically you would not return the password in a real application
+            userDto.setPassword(user.getPassword());
             return userDto;
         }
         return null;
