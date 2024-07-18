@@ -2,18 +2,17 @@ package com.onlinebankingsystem.entities;
 
 import jakarta.persistence.Entity;
 import jdk.jfr.Enabled;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class BusinessAccount extends Account{
+@NoArgsConstructor
 
-    public BusinessAccount(){
-        super();
-        this.setTypeOfAccount("Business Account");
-    }
+public class BusinessAccount extends Account{
 
     public BusinessAccount(double initialBalance){
         super();

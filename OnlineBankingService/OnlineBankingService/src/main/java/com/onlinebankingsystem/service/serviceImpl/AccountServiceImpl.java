@@ -18,7 +18,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void createAccount(AccountDTO accountDTO) {
         Account account;
-        if("checking".equalsIgnoreCase(accountDTO.getTypeOfAccount())){
+        if("Saving Account".equalsIgnoreCase(accountDTO.getTypeOfAccount())){
             account = new SavingAccount(accountDTO.getBalance());
         }else{
             account = new BusinessAccount(accountDTO.getBalance());

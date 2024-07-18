@@ -30,6 +30,5 @@ public class TransactionalServiceImpl implements TransactionalService {
 
      accountRepository.save(fromAccount);
      accountRepository.save(toAccount);
-
     }
 }

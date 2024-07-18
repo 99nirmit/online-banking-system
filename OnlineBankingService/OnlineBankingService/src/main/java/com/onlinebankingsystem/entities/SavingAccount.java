@@ -3,16 +3,13 @@ package com.onlinebankingsystem.entities;
 import jakarta.persistence.Entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 public class SavingAccount extends Account{
-
-    public SavingAccount(){
-        super();
-        this.setTypeOfAccount("Saving Account");
-    }
 
     public SavingAccount(double initialBalance){
         super();
