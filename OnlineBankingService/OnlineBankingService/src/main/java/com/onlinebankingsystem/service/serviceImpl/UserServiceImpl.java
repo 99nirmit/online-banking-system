@@ -5,7 +5,6 @@ import com.onlinebankingsystem.entities.User;
 import com.onlinebankingsystem.repository.UserRepository;
 import com.onlinebankingsystem.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,7 +14,6 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDto getUserById(Long id) {
@@ -26,7 +24,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto registerUser(UserDto userDto) {
         User user = convertToEntity(userDto);
-        user.setPassword(passwordEncoder.encode(userDto.getPassword())); // Encrypting password
+        user.setPassword(userDto.getPassword()); // Encrypting password
         User savedUser = userRepository.save(user);
         return convertToDto(savedUser);
     }
@@ -37,7 +35,7 @@ public class UserServiceImpl implements UserService {
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             user.setUsername(userDto.getUsername());
-            user.setPassword(passwordEncoder.encode(userDto.getPassword())); // Encrypting password
+            user.setPassword(userDto.getPassword()); // Encrypting password
             userRepository.save(user);
             return convertToDto(user);
         }
@@ -49,10 +47,6 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
-    @Override
-    public String encodePassword(String password) {
-        return passwordEncoder.encode(password);
-    }
 
     private UserDto convertToDto(User user) {
         UserDto userDto = new UserDto();

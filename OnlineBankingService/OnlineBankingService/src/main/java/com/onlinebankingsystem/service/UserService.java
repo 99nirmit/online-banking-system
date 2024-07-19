@@ -8,5 +8,4 @@ public interface UserService {
     UserDto registerUser(UserDto userDto);
     UserDto updateUser(Long id, UserDto userDto);
     void deleteUser(Long id);
-    String encodePassword(String password);
 }
